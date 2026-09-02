@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "types": ["node"],
+    "baseUrl": ".",
+    "paths": {
+      "@pages/*": ["tests/pages/*"],
+      "@support/*": ["tests/support/*"]
+    }
+  },
+  "include": ["tests/**/*.ts", "cucumber.mjs"]
+}

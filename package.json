@@ -1,0 +1,24 @@
+{
+  "name": "axon-bdd",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Salesforce automation with Playwright + Cucumber BDD",
+  "scripts": {
+    "test": "cucumber-js tests/features --require-module tsx/cjs --require tests/support/world.ts --require tests/support/hooks.ts --require tests/steps/login.steps.ts --require tests/steps/account.steps.ts --require tests/steps/salesforce-encrypted-login.steps.ts --format progress --format html:reports/cucumber-report.html",
+    "test:headed": "set HEADED=true&& npm test",
+    "test:smoke": "npm test -- --tags @smoke",
+    "test:login": "npm test -- --tags @login",
+    "test:scottsdale": "npm test -- --tags @scottsdale",
+    "test:headed:scottsdale": "set HEADED=true&& npm run test:scottsdale",
+    "test:scottsdale:session": "set REUSE_SESSION=true&& npm test -- --tags @session",
+    "test:headed:scottsdale:session": "set HEADED=true&& set REUSE_SESSION=true&& npm test -- --tags @session",
+    "encrypt:password": "node scripts/encrypt-env.mjs",
+    "session:save": "node scripts/save-session.mjs"
+  },
+  "devDependencies": {
+    "@cucumber/cucumber": "^13.0.0",
+    "@playwright/test": "^1.53.0",
+    "dotenv": "^16.4.5",
+    "tsx": "^4.20.3"
+  }
+}
