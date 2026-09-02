@@ -8,6 +8,7 @@
     "test:headed": "set HEADED=true&& npm test",
     "test:smoke": "npm test -- --tags @smoke",
     "test:login": "npm test -- --tags @login",
+    "test:opportunity": "npm test -- --tags @opportunity",
     "test:scottsdale": "npm test -- --tags @scottsdale",
     "test:headed:scottsdale": "set HEADED=true&& npm run test:scottsdale",
     "test:scottsdale:session": "set REUSE_SESSION=true&& npm test -- --tags @session",

@@ -1,10 +1,18 @@
 import { Given } from '@cucumber/cucumber';
-import { config, passwordWithToken } from '../support/config';
+import { assertJwtConfig, config, passwordWithToken } from '../support/config';
 import { loadMcpSalesforceCredentials, loginPassword } from '../support/mcp-credentials';
 import { chromeProfileExists, sessionFileExists } from '../support/session-storage';
 import type { SalesforceWorld } from '../support/world';
 
 async function loginOrReuseSession(world: SalesforceWorld): Promise<void> {
+  if (config.authMode === 'jwt') {
+    assertJwtConfig();
+    await world.loginPage.loginViaJwt();
+    world.sessionReused = false;
+    console.log('\n>>> Logged in via JWT Bearer Flow — MFA bypassed.\n');
+    return;
+  }
+
   if (config.reuseSession && (sessionFileExists() || chromeProfileExists() || world.persistentSession)) {
     await world.loginPage.openHome();
     world.sessionReused = true;
