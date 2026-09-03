@@ -1,6 +1,7 @@
 import type { Frame, Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 import { config } from '../support/config';
+import { fetchJwtAccessToken, frontDoorUrl } from '../support/jwt-auth';
 import { lightningHomeUrl } from '../support/session-storage';
 import { dismissSessionEndedIfPresent } from '../support/session-guard';
 import { BasePage } from './base.page';
@@ -271,6 +272,20 @@ export class LoginPage extends BasePage {
 
   async waitAfterLogin(): Promise<void> {
     // No post-login wait.
+  }
+
+  /** Logs in via the JWT Bearer Flow, bridging the OAuth token to a Lightning session via frontdoor.jsp. */
+  async loginViaJwt(): Promise<void> {
+    const token = await fetchJwtAccessToken();
+    await this.page.goto(frontDoorUrl(token.instance_url, token.access_token), {
+      waitUntil: 'domcontentloaded',
+      timeout: 60_000,
+    });
+
+    await this.page
+      .locator('.slds-global-header__item_search, .slds-global-header')
+      .first()
+      .waitFor({ state: 'visible', timeout: 45_000 });
   }
 
   async loginTwoStep(username: string, password: string): Promise<void> {

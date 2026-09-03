@@ -1,4 +1,4 @@
-@smoke @salesforce
+@smoke @salesforce @opportunity
 Feature: Salesforce opportunity basic flow
   Scenario: Login and open New Opportunity from related tab
     Given Login to salesforce

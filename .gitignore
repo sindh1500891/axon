@@ -3,3 +3,6 @@ reports/
 test-results/
 .env
 playwright/.auth/
+*.pem
+*.key
+secrets/

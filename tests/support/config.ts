@@ -45,6 +45,14 @@ const mcpUrl = mcpBaseUrl();
 const reuseSession = String(process.env.REUSE_SESSION || 'false').toLowerCase() === 'true';
 
 export const config = {
+  authMode: (process.env.AUTH_MODE || 'ui').trim().toLowerCase() as 'ui' | 'jwt',
+  jwt: {
+    clientId: process.env.SF_JWT_CLIENT_ID?.trim() ?? '',
+    username: (process.env.SF_JWT_USERNAME || process.env.SF_USERNAME || '').trim(),
+    privateKeyPath: process.env.SF_JWT_PRIVATE_KEY_PATH?.trim() ?? '',
+    audience: (process.env.SF_JWT_AUDIENCE || 'https://test.salesforce.com').trim(),
+    loginUrl: (process.env.SF_JWT_LOGIN_URL || process.env.SF_SANDBOX_URL || 'https://test.salesforce.com').trim(),
+  },
   baseUrl: (process.env.BASE_URL || mcpUrl || 'https://axon--test.sandbox.my.salesforce.com').trim(),
   loginUrl: (process.env.BASE_URL || mcpUrl || 'https://axon--test.sandbox.my.salesforce.com').trim(),
   username: process.env.SF_USERNAME?.trim() ?? '',
@@ -66,6 +74,12 @@ export function assertCredentials(): void {
   if (!config.password) {
     throw new Error('Missing SF_PASSWORD or SF_PASSWORD_ENCRYPTED in .env');
   }
+}
+
+export function assertJwtConfig(): void {
+  required('SF_JWT_CLIENT_ID', config.jwt.clientId);
+  required('SF_JWT_USERNAME', config.jwt.username);
+  required('SF_JWT_PRIVATE_KEY_PATH', config.jwt.privateKeyPath);
 }
 
 export function passwordWithToken(): string {
